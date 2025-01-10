@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ELO Manager Front-End</title>
+  <!-- Link your external CSS file -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>ELO Manager</h1>
+  <nav>
+    <button onclick="showSection('leaguesSection')">Leagues</button>
+    <button onclick="showSection('teamsSection')">Teams</button>
+    <button onclick="showSection('schedulesSection')">Schedules</button>
+    <button onclick="showAdminLogin()">Admin</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ======== LEAGUES SECTION ======== -->
+  <section id="leaguesSection" class="active">
+    <h2>Leagues</h2>
+    <div id="leaguesList">
+      <table id="leaguesTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Logo URL</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======== TEAMS SECTION ======== -->
+  <section id="teamsSection">
+    <h2>Teams</h2>
+    <div id="teamsList">
+      <table id="teamsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>League ID</th>
+            <th>Name</th>
+            <th>ELO</th>
+            <th>Logo</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======== SCHEDULES SECTION ======== -->
+  <section id="schedulesSection">
+    <h2>Schedules</h2>
+    <div id="schedulesList">
+      <table id="schedulesTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>League</th>
+            <th>Home Team</th>
+            <th>Away Team</th>
+            <th>Match Date</th>
+            <th>Status</th>
+            <th>Home Score</th>
+            <th>Away Score</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ======== ADMIN SECTION ======== -->
+  <section id="adminSection">
+    <h2>Admin Panel</h2>
+
+    <!-- CREATE LEAGUE -->
+    <form id="createLeagueForm">
+      <h3>Create League</h3>
+      <div class="success hidden" id="leagueSuccess"></div>
+      <div class="error hidden" id="leagueError"></div>
+
+      <label for="leagueName">League Name</label>
+      <input type="text" id="leagueName" required />
+
+      <label for="leagueLogoUrl">League Logo URL (optional)</label>
+      <input type="text" id="leagueLogoUrl" placeholder="http://example.com/logo.png" />
+
+      <button type="submit">Create League</button>
+    </form>
+
+    <!-- CREATE TEAM -->
+    <form id="createTeamForm">
+      <h3>Create Team</h3>
+      <div class="success hidden" id="teamSuccess"></div>
+      <div class="error hidden" id="teamError"></div>
+
+      <label for="teamLeagueId">League ID</label>
+      <input type="text" id="teamLeagueId" placeholder="league ID here" required />
+
+      <label for="teamName">Team Name</label>
+      <input type="text" id="teamName" required />
+
+      <label for="teamElo">Initial ELO (optional)</label>
+      <input type="number" id="teamElo" placeholder="1500" />
+
+      <button type="submit">Create Team</button>
+    </form>
+
+    <!-- CREATE SCHEDULE -->
+    <form id="createScheduleForm">
+      <h3>Create Schedule</h3>
+      <div class="success hidden" id="scheduleSuccess"></div>
+      <div class="error hidden" id="scheduleError"></div>
+
+      <label for="scheduleLeagueId">League ID</label>
+      <input type="text" id="scheduleLeagueId" required />
+
+      <label for="homeTeamId">Home Team ID</label>
+      <input type="text" id="homeTeamId" required />
+
+      <label for="awayTeamId">Away Team ID</label>
+      <input type="text" id="awayTeamId" required />
+
+      <label for="matchDate">Match Date (YYYY-MM-DDTHH:MM:SSZ)</label>
+      <input type="datetime-local" id="matchDate" />
+
+      <button type="submit">Create Schedule</button>
+    </form>
+
+    <!-- UPDATE SCHEDULE RESULT -->
+    <form id="updateResultForm">
+      <h3>Update Match Result</h3>
+      <div class="success hidden" id="resultSuccess"></div>
+      <div class="error hidden" id="resultError"></div>
+
+      <label for="scheduleId">Schedule ID</label>
+      <input type="text" id="scheduleId" required />
+
+      <label for="homeScore">Home Score</label>
+      <input type="number" id="homeScore" required />
+
+      <label for="awayScore">Away Score</label>
+      <input type="number" id="awayScore" required />
+
+      <button type="submit">Update Result</button>
+    </form>
+
+    <!-- UPLOAD TEAM LOGO -->
+    <form id="uploadLogoForm" enctype="multipart/form-data">
+      <h3>Upload Team Logo</h3>
+      <div class="success hidden" id="logoSuccess"></div>
+      <div class="error hidden" id="logoError"></div>
+
+      <label for="logoTeamId">Team ID</label>
+      <input type="text" id="logoTeamId" required />
+
+      <label for="logoFile">Select Logo File</label>
+      <input type="file" id="logoFile" accept="image/*" required />
+
+      <button type="submit">Upload Logo</button>
+    </form>
+  </section>
+</main>
+
+<!-- ======== ADMIN LOGIN MODAL ======== -->
+<div class="modal-overlay" id="loginOverlay">
+  <div class="modal">
+    <h3>Admin Login</h3>
+    <div class="error hidden" id="loginError"></div>
+    <label for="adminUsername">Username</label>
+    <input type="text" id="adminUsername" />
+    
+    <label for="adminPassword">Password</label>
+    <input type="password" id="adminPassword" />
+
+    <button id="loginBtn">Login</button>
+    <button class="close-btn" onclick="hideAdminLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- Link your external JS file just before closing body -->
+<script src="scripts.js"></script>
+</body>
+</html>
